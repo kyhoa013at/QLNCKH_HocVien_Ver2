@@ -1,10 +1,10 @@
-﻿@page "/laphoidong"
-@rendermode InteractiveServer
+@page "/laphoidong"
+
 @using QLNCKH_HocVien.Client.Models
 @using QLNCKH_HocVien.Client.Services
 @inject HoiDongService HdService
 
-<h3 class="text-danger fw-bold mb-4"><i class="bi bi-people-fill"></i> LẬP HỘI ĐỒNG CHẤM</h3>
+<h3 class="text-danger fw-bold mb-4"><i class="bi bi-people-fill"></i> L?P H?I �?NG CH?M</h3>
 
 @if (!string.IsNullOrEmpty(msgError)) { <div class="alert alert-danger">@msgError</div> }
 
@@ -12,13 +12,13 @@
     <li class="nav-item">
         <button class="nav-link @(vongHienTai == VongCham.SoLoai ? " active fw-bold" : "" )"
                 @onclick="() => ChuyenVong(VongCham.SoLoai)">
-            Vòng Sơ Loại (1 người)
+            V�ng So Lo?i (1 ngu?i)
         </button>
     </li>
     <li class="nav-item">
         <button class="nav-link @(vongHienTai == VongCham.ChungKhao ? " active fw-bold" : "" )"
                 @onclick="() => ChuyenVong(VongCham.ChungKhao)">
-            Vòng Chung Khảo (Hội đồng)
+            V�ng Chung Kh?o (H?i d?ng)
         </button>
     </li>
 </ul>
@@ -27,13 +27,13 @@
     <div class="col-md-5">
         <div class="card border-danger shadow-sm">
             <div class="card-header bg-danger text-white">
-                @(vongHienTai == VongCham.SoLoai ? "Phân công Người chấm sơ loại" : "Thành lập Hội đồng Chung khảo")
+                @(vongHienTai == VongCham.SoLoai ? "Ph�n c�ng Ngu?i ch?m so lo?i" : "Th�nh l?p H?i d?ng Chung kh?o")
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    <label class="form-label">Chọn Chuyên đề (*)</label>
+                    <label class="form-label">Ch?n Chuy�n d? (*)</label>
                     <select class="form-select" @bind="hdMoi.IdChuyenDe">
-                        <option value="0">-- Chọn Chuyên đề --</option>
+                        <option value="0">-- Ch?n Chuy�n d? --</option>
                         @foreach(var cd in dsChuyenDe)
                         {
                         <option value="@cd.Id">@cd.MaSoCD - @cd.TenChuyenDe</option>
@@ -42,27 +42,27 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Ngày chấm</label>
+                    <label class="form-label">Ng�y ch?m</label>
                     <input type="date" class="form-control" @bind="hdMoi.NgayCham" />
                 </div>
 
                 @if(vongHienTai == VongCham.ChungKhao)
                 {
                 <div class="mb-3">
-                    <label class="form-label">Địa điểm</label>
-                    <input type="text" class="form-control" @bind="hdMoi.DiaDiem" placeholder="Phòng họp..." />
+                    <label class="form-label">�?a di?m</label>
+                    <input type="text" class="form-control" @bind="hdMoi.DiaDiem" placeholder="Ph�ng h?p..." />
                 </div>
                 }
 
                 <hr />
-                <h6 class="text-danger">Thành viên:</h6>
+                <h6 class="text-danger">Th�nh vi�n:</h6>
 
                 @if(vongHienTai == VongCham.SoLoai)
                 {
                 <div class="mb-2">
-                    <label>Người chấm (*)</label>
+                    <label>Ngu?i ch?m (*)</label>
                     <select class="form-select" @bind="idGvSoLoai">
-                        <option value="0">-- Chọn Giáo viên --</option>
+                        <option value="0">-- Ch?n Gi�o vi�n --</option>
                         @foreach(var gv in dsGiaoVien) {
                         <option value="@gv.Id">@gv.MaSoCB - @gv.HoTen</option> }
                     </select>
@@ -72,16 +72,16 @@
                 {
                 <div class="input-group mb-2">
                     <select class="form-select" @bind="idGvTam">
-                        <option value="0">-- Chọn thành viên --</option>
+                        <option value="0">-- Ch?n th�nh vi�n --</option>
                         @foreach(var gv in dsGiaoVien) {
                         <option value="@gv.Id">@gv.HoTen</option> }
                     </select>
                     <select class="form-select" style="max-width: 120px;" @bind="vaiTroTam">
-                        <option>Chủ tịch</option>
-                        <option>Thư ký</option>
-                        <option>Ủy viên</option>
+                        <option>Ch? t?ch</option>
+                        <option>Thu k�</option>
+                        <option>?y vi�n</option>
                     </select>
-                    <button class="btn btn-outline-secondary" type="button" @onclick="ThemThanhVien">Thêm</button>
+                    <button class="btn btn-outline-secondary" type="button" @onclick="ThemThanhVien">Th�m</button>
                 </div>
 
                 <ul class="list-group mb-3">
@@ -97,7 +97,7 @@
                 }
 
                 <button class="btn btn-danger w-100 mt-3" @onclick="LuuHoiDong">
-                    <i class="bi bi-check-circle"></i> Xác nhận Phân công
+                    <i class="bi bi-check-circle"></i> X�c nh?n Ph�n c�ng
                 </button>
             </div>
         </div>
@@ -105,16 +105,16 @@
 
     <div class="col-md-7">
         <div class="card">
-            <div class="card-header">Danh sách phân công (@vongHienTai)</div>
+            <div class="card-header">Danh s�ch ph�n c�ng (@vongHienTai)</div>
             <div class="card-body">
                 <table class="table table-bordered table-sm">
                     <thead class="table-light">
                         <tr>
-                            <th>Mã CĐ</th>
-                            <th>Tên Chuyên Đề</th>
-                            <th>Ngày chấm</th>
-                            <th>Người chấm / Hội đồng</th>
-                            <th>Xóa</th>
+                            <th>M� C�</th>
+                            <th>T�n Chuy�n �?</th>
+                            <th>Ng�y ch?m</th>
+                            <th>Ngu?i ch?m / H?i d?ng</th>
+                            <th>X�a</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -130,9 +130,9 @@
                                     @foreach(var tv in item.ThanhViens)
                                     {
                                     var gv = dsGiaoVien.FirstOrDefault(x => x.Id == tv.IdGiaoVien);
-                                    // Sử dụng IdDonViCongTac và danh sách ToChuc
-                                    var dv = dsToChuc?.FirstOrDefault(d => d.Id == gv?.IdDonViCongTac)?.Ten ?? "Chưa cập nhật";
-                                    var cv = dsChucVu?.FirstOrDefault(c => c.IdChucVu == gv?.IdChucVu)?.TenChucVu ?? "Chưa cập nhật";
+                                    // S? d?ng IdDonViCongTac v� danh s�ch ToChuc
+                                    var dv = dsToChuc?.FirstOrDefault(d => d.Id == gv?.IdDonViCongTac)?.Ten ?? "Chua c?p nh?t";
+                                    var cv = dsChucVu?.FirstOrDefault(c => c.IdChucVu == gv?.IdChucVu)?.TenChucVu ?? "Chua c?p nh?t";
 
                                     <li>
                                         @if(vongHienTai == VongCham.SoLoai)
@@ -149,7 +149,7 @@
                                 </ul>
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-outline-danger" @onclick="()=>Xoa(item.Id)">Xóa</button>
+                                <button class="btn btn-sm btn-outline-danger" @onclick="()=>Xoa(item.Id)">X�a</button>
                             </td>
                         </tr>
                         }
@@ -169,14 +169,14 @@
 
     private int idGvSoLoai = 0;
     private int idGvTam = 0;
-    private string vaiTroTam = "Ủy viên";
+    private string vaiTroTam = "?y vi�n";
 
     private List<ChuyenDeNCKH>
         dsChuyenDe = new();
         private List<GiaoVien>
             dsGiaoVien = new();
 
-            // Đổi CapDonVi thành ToChuc
+            // �?i CapDonVi th�nh ToChuc
             private List<ToChuc>
                 dsToChuc = new();
                 private List<ChucVu>
@@ -189,19 +189,19 @@
                     var t1 = HdService.LayDsChuyenDe();
                     var t2 = HdService.LayDsGiaoVien();
                     var t3 = HdService.LayDsHoiDong();
-                    var t4 = HdService.LayDsToChuc(); // Gọi hàm mới
+                    var t4 = HdService.LayDsToChuc(); // G?i h�m m?i
                     var t5 = HdService.LayDsChucVu();
 
                     await Task.WhenAll(t1, t2, t3, t4, t5);
                     dsChuyenDe = t1.Result;
                     dsGiaoVien = t2.Result;
                     dsHoiDong = t3.Result;
-                    dsToChuc = t4.Result; // Gán vào list ToChuc
+                    dsToChuc = t4.Result; // G�n v�o list ToChuc
                     dsChucVu = t5.Result;
                     }
                     catch(Exception ex)
                     {
-                    msgError = "Lỗi load: " + ex.Message;
+                    msgError = "L?i load: " + ex.Message;
                     }
                     }
 
@@ -227,17 +227,17 @@
 
                     private async Task LuuHoiDong()
                     {
-                    if (hdMoi.IdChuyenDe == 0) { msgError = "Chưa chọn chuyên đề"; return; }
+                    if (hdMoi.IdChuyenDe == 0) { msgError = "Chua ch?n chuy�n d?"; return; }
 
                     if (vongHienTai == VongCham.SoLoai)
                     {
-                    if (idGvSoLoai == 0) { msgError = "Chưa chọn người chấm sơ loại"; return; }
+                    if (idGvSoLoai == 0) { msgError = "Chua ch?n ngu?i ch?m so lo?i"; return; }
                     hdMoi.ThanhViens.Clear();
-                    hdMoi.ThanhViens.Add(new ThanhVienHoiDong { IdGiaoVien = idGvSoLoai, VaiTro = "Người chấm" });
+                    hdMoi.ThanhViens.Add(new ThanhVienHoiDong { IdGiaoVien = idGvSoLoai, VaiTro = "Ngu?i ch?m" });
                     }
                     else
                     {
-                    if (hdMoi.ThanhViens.Count == 0) { msgError = "Hội đồng phải có ít nhất 1 thành viên"; return; }
+                    if (hdMoi.ThanhViens.Count == 0) { msgError = "H?i d?ng ph?i c� �t nh?t 1 th�nh vi�n"; return; }
                     }
 
                     try
@@ -255,17 +255,17 @@
 
                     private async Task Xoa(int id)
                     {
-                        if(!await JS.InvokeAsync<bool>("confirm", "Bạn muốn xóa phân công này?")) return;
+                        if(!await JS.InvokeAsync<bool>("confirm", "B?n mu?n x�a ph�n c�ng n�y?")) return;
     
-                        msgError = null; // Reset thông báo lỗi cũ
+                        msgError = null; // Reset th�ng b�o l?i cu
                         try 
                         {
                             await HdService.XoaHoiDong(id);
-                            dsHoiDong = await HdService.LayDsHoiDong(); // Tải lại danh sách mới
+                            dsHoiDong = await HdService.LayDsHoiDong(); // T?i l?i danh s�ch m?i
                         }
                         catch (Exception ex)
                         {
-                            msgError = ex.Message; // Hiện lỗi đỏ lên màn hình
+                            msgError = ex.Message; // Hi?n l?i d? l�n m�n h�nh
                         }
                     }
 

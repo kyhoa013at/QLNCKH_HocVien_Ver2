@@ -1,19 +1,67 @@
-﻿<MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Trang chủ</MudNavLink>
+﻿<MudNavMenu Bordered="true" Color="Color.Primary" Class="py-2">
+    <MudNavLink Href="" 
+                Match="NavLinkMatch.All" 
+                Icon="@Icons.Material.Filled.Dashboard"
+                IconColor="Color.Primary">
+        Trang chủ
+    </MudNavLink>
 
-    <MudNavGroup Title="Danh mục & Hồ sơ" Icon="@Icons.Material.Filled.Folder" Expanded="true">
-        <MudNavLink Href="quanlysinhvien" Icon="@Icons.Material.Filled.Person">Sinh viên</MudNavLink>
-        <MudNavLink Href="quanlygiaovien" Icon="@Icons.Material.Filled.School">Giáo viên</MudNavLink>
+    <MudDivider Class="my-2" />
+
+    <MudNavGroup Title="Danh mục & Hồ sơ" 
+                 Icon="@Icons.Material.Filled.FolderShared" 
+                 IconColor="Color.Info"
+                 Expanded="true">
+        <MudNavLink Href="quanlysinhvien" 
+                    Icon="@Icons.Material.Filled.School"
+                    IconColor="Color.Primary">
+            Quản lý Sinh viên
+        </MudNavLink>
+        <MudNavLink Href="quanlygiaovien" 
+                    Icon="@Icons.Material.Filled.SupervisorAccount"
+                    IconColor="Color.Secondary">
+            Quản lý Giáo viên
+        </MudNavLink>
     </MudNavGroup>
 
-    <MudNavGroup Title="Quản lý Chuyên đề" Icon="@Icons.Material.Filled.Book" Expanded="true">
-        <MudNavLink Href="dangkychuyende" Icon="@Icons.Material.Filled.AppRegistration">Đăng ký CĐ</MudNavLink>
-        <MudNavLink Href="nopchuyende" Icon="@Icons.Material.Filled.UploadFile">Nộp sản phẩm</MudNavLink>
+    <MudDivider Class="my-2" />
+
+    <MudNavGroup Title="Chuyên đề NCKH" 
+                 Icon="@Icons.Material.Filled.MenuBook" 
+                 IconColor="Color.Success"
+                 Expanded="true">
+        <MudNavLink Href="dangkychuyende" 
+                    Icon="@Icons.Material.Filled.AppRegistration"
+                    IconColor="Color.Success">
+            Đăng ký Chuyên đề
+        </MudNavLink>
+        <MudNavLink Href="nopchuyende" 
+                    Icon="@Icons.Material.Filled.CloudUpload"
+                    IconColor="Color.Info">
+            Nộp sản phẩm
+        </MudNavLink>
     </MudNavGroup>
 
-    <MudNavGroup Title="Đánh giá & Xếp hạng" Icon="@Icons.Material.Filled.Grade" Expanded="true">
-        <MudNavLink Href="laphoidong" Icon="@Icons.Material.Filled.Groups">Lập Hội đồng</MudNavLink>
-        <MudNavLink Href="capnhatketqua" Icon="@Icons.Material.Filled.AssignmentTurnedIn">Chấm điểm</MudNavLink>
-        <MudNavLink Href="xepgiai" Icon="@Icons.Material.Filled.EmojiEvents">Xếp giải</MudNavLink>
+    <MudDivider Class="my-2" />
+
+    <MudNavGroup Title="Đánh giá & Xếp hạng" 
+                 Icon="@Icons.Material.Filled.Stars" 
+                 IconColor="Color.Warning"
+                 Expanded="true">
+        <MudNavLink Href="laphoidong" 
+                    Icon="@Icons.Material.Filled.Groups"
+                    IconColor="Color.Tertiary">
+            Lập Hội đồng
+        </MudNavLink>
+        <MudNavLink Href="capnhatketqua" 
+                    Icon="@Icons.Material.Filled.Grading"
+                    IconColor="Color.Warning">
+            Chấm điểm
+        </MudNavLink>
+        <MudNavLink Href="xepgiai" 
+                    Icon="@Icons.Material.Filled.EmojiEvents"
+                    IconColor="Color.Error">
+            Xếp giải
+        </MudNavLink>
     </MudNavGroup>
 </MudNavMenu>

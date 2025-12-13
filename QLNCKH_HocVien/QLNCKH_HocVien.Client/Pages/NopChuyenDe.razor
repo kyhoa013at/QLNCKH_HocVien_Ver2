@@ -1,10 +1,10 @@
-﻿@page "/nopchuyende"
-@rendermode InteractiveServer
+@page "/nopchuyende"
+
 @using QLNCKH_HocVien.Client.Models
 @using QLNCKH_HocVien.Client.Services
 @inject NopSanPhamService NopService
 
-<h3 class="text-warning fw-bold mb-4"><i class="bi bi-box-seam"></i> NỘP SẢN PHẨM CHUYÊN ĐỀ</h3>
+<h3 class="text-warning fw-bold mb-4"><i class="bi bi-box-seam"></i> N?P S?N PH?M CHUY�N �?</h3>
 
 @if (!string.IsNullOrEmpty(msgError))
 {
@@ -14,15 +14,15 @@
 <div class="row">
     <div class="col-md-4">
         <div class="card shadow-sm">
-            <div class="card-header bg-warning text-dark fw-bold">Thông tin nộp</div>
+            <div class="card-header bg-warning text-dark fw-bold">Th�ng tin n?p</div>
             <div class="card-body">
                 <EditForm Model="@baiNop" OnValidSubmit="Save">
                     <DataAnnotationsValidator />
 
                     <div class="mb-3">
-                        <label class="form-label">Chọn Chuyên đề (*)</label>
+                        <label class="form-label">Ch?n Chuy�n d? (*)</label>
                         <InputSelect @bind-Value="baiNop.IdChuyenDe" class="form-select">
-                            <option value="0">-- Chọn Chuyên đề --</option>
+                            <option value="0">-- Ch?n Chuy�n d? --</option>
                             @foreach (var cd in dsChuyenDe)
                             {
                                 <option value="@cd.Id">@cd.MaSoCD - @cd.TenChuyenDe</option>
@@ -36,27 +36,27 @@
                         var svThucHien = dsSinhVien.FirstOrDefault(x => x.Id == cdChon?.IdHocVien);
 
                         <div class="alert alert-secondary p-2 small">
-                            <strong>Tên CĐ:</strong> @cdChon?.TenChuyenDe <br />
-                            <strong>Người nộp (Thành viên):</strong> <span class="text-primary fw-bold">@svThucHien?.HoTen</span> <br />
-                            <strong>Lớp:</strong> @svThucHien?.Lop
+                            <strong>T�n C�:</strong> @cdChon?.TenChuyenDe <br />
+                            <strong>Ngu?i n?p (Th�nh vi�n):</strong> <span class="text-primary fw-bold">@svThucHien?.HoTen</span> <br />
+                            <strong>L?p:</strong> @svThucHien?.Lop
                         </div>
                     }
 
                     <div class="mb-3">
-                        <label class="form-label">Trạng thái nộp (*)</label>
+                        <label class="form-label">Tr?ng th�i n?p (*)</label>
                         <InputSelect @bind-Value="baiNop.TrangThai" class="form-select">
-                            <option value="@TrangThaiNop.NopBanMem">Nộp bản mềm</option>
-                            <option value="@TrangThaiNop.NopBanCung">Nộp bản cứng</option>
-                            <option value="@TrangThaiNop.NopSauChinhSua">Nộp sau chỉnh sửa</option>
+                            <option value="@TrangThaiNop.NopBanMem">N?p b?n m?m</option>
+                            <option value="@TrangThaiNop.NopBanCung">N?p b?n c?ng</option>
+                            <option value="@TrangThaiNop.NopSauChinhSua">N?p sau ch?nh s?a</option>
                         </InputSelect>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Ghi chú / Link sản phẩm</label>
+                        <label class="form-label">Ghi ch� / Link s?n ph?m</label>
                         <InputTextArea @bind-Value="baiNop.GhiChu" class="form-control" rows="2" />
                     </div>
 
-                    <button type="submit" class="btn btn-warning w-100 fw-bold">Xác Nhận Nộp</button>
+                    <button type="submit" class="btn btn-warning w-100 fw-bold">X�c Nh?n N?p</button>
                 </EditForm>
             </div>
         </div>
@@ -64,17 +64,17 @@
 
     <div class="col-md-8">
         <div class="card shadow-sm">
-            <div class="card-header">Lịch sử nộp sản phẩm</div>
+            <div class="card-header">L?ch s? n?p s?n ph?m</div>
             <div class="card-body">
                 <table class="table table-bordered table-hover align-middle">
                     <thead class="table-light">
                         <tr>
-                            <th>Mã CĐ</th>
-                            <th>Tên Chuyên Đề</th>
-                            <th>Người nộp</th>
-                            <th>Trạng thái</th>
-                            <th>Ngày nộp</th>
-                            <th>Xóa</th>
+                            <th>M� C�</th>
+                            <th>T�n Chuy�n �?</th>
+                            <th>Ngu?i n?p</th>
+                            <th>Tr?ng th�i</th>
+                            <th>Ng�y n?p</th>
+                            <th>X�a</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -91,13 +91,13 @@
                                     @switch (item.TrangThai)
                                     {
                                         case TrangThaiNop.NopBanMem:
-                                            <span class="badge bg-primary">Bản mềm</span>
+                                            <span class="badge bg-primary">B?n m?m</span>
                                             break;
                                         case TrangThaiNop.NopBanCung:
-                                            <span class="badge bg-success">Bản cứng</span>
+                                            <span class="badge bg-success">B?n c?ng</span>
                                             break;
                                         case TrangThaiNop.NopSauChinhSua:
-                                            <span class="badge bg-warning text-dark">Đã sửa</span>
+                                            <span class="badge bg-warning text-dark">�� s?a</span>
                                             break;
                                     }
                                 </td>
@@ -138,16 +138,16 @@
         }
         catch (Exception ex)
         {
-            msgError = "Lỗi: " + ex.Message;
+            msgError = "L?i: " + ex.Message;
         }
     }
 
     private async Task Save()
     {
-        // Validate thủ công: Phải chọn chuyên đề
+        // Validate th? c�ng: Ph?i ch?n chuy�n d?
         if (baiNop.IdChuyenDe == 0)
         {
-            msgError = "Vui lòng chọn Chuyên đề cần nộp!";
+            msgError = "Vui l�ng ch?n Chuy�n d? c?n n?p!";
             return;
         }
 
@@ -167,7 +167,7 @@
 
     private async Task Delete(int id)
     {
-        if (!await JS.InvokeAsync<bool>("confirm", "Bạn có chắc muốn xóa lịch sử nộp này?")) return;
+        if (!await JS.InvokeAsync<bool>("confirm", "B?n c� ch?c mu?n x�a l?ch s? n?p n�y?")) return;
         await NopService.XoaNop(id);
         dsDaNop = await NopService.LayDsNop();
     }

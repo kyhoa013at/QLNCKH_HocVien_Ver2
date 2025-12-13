@@ -1,43 +1,43 @@
-﻿@page "/capnhatketqua"
-@rendermode InteractiveServer
+@page "/capnhatketqua"
+
 @using QLNCKH_HocVien.Client.Models
 @using QLNCKH_HocVien.Client.Services
 @inject KetQuaService KqService
 
-<h3 class="text-primary fw-bold mb-4">CẬP NHẬT KẾT QUẢ CHUYÊN ĐỀ</h3>
+<h3 class="text-primary fw-bold mb-4">C?P NH?T K?T QU? CHUY�N �?</h3>
 
 <ul class="nav nav-tabs mb-3">
     <li class="nav-item">
-        <button class="nav-link @(tab == 1 ? "active fw-bold" : "")" @onclick="() => tab = 1">Vòng Sơ Loại</button>
+        <button class="nav-link @(tab == 1 ? "active fw-bold" : "")" @onclick="() => tab = 1">V�ng So Lo?i</button>
     </li>
     <li class="nav-item">
-        <button class="nav-link @(tab == 2 ? "active fw-bold" : "")" @onclick="() => tab = 2">Vòng Chung Khảo</button>
+        <button class="nav-link @(tab == 2 ? "active fw-bold" : "")" @onclick="() => tab = 2">V�ng Chung Kh?o</button>
     </li>
 </ul>
 
 @if (tab == 1)
 {
-    // --- GIAO DIỆN VÒNG SƠ LOẠI ---
+    // --- GIAO DI?N V�NG SO LO?I ---
     <div class="mb-3">
         <button class="btn btn-outline-primary" @onclick="AutoXetDuyet">
-            <i class="bi bi-lightning-fill"></i> Tự động xét duyệt Top 15
+            <i class="bi bi-lightning-fill"></i> T? d?ng x�t duy?t Top 15
         </button>
     </div>
 
     <table class="table table-bordered table-hover">
         <thead class="table-light">
             <tr>
-                <th>Mã CĐ</th>
-                <th>Tên Chuyên Đề</th>
-                <th width="150">Điểm chấm</th>
-                <th width="150">Kết quả</th>
-                <th>Thao tác</th>
+                <th>M� C�</th>
+                <th>T�n Chuy�n �?</th>
+                <th width="150">�i?m ch?m</th>
+                <th width="150">K?t qu?</th>
+                <th>Thao t�c</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var cd in dsChuyenDe)
             {
-                // Tìm kết quả hiện có trong list (nếu chưa có thì tạo mới ảo để bind)
+                // T�m k?t qu? hi?n c� trong list (n?u chua c� th� t?o m?i ?o d? bind)
                 var kq = dsKqSoLoai.FirstOrDefault(x => x.IdChuyenDe == cd.Id)
                 ?? new KetQuaSoLoai { IdChuyenDe = cd.Id };
 
@@ -51,11 +51,11 @@
                     <td>
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" @bind="kq.KetQua" />
-                            <label class="form-check-label">@(kq.KetQua ? "Được đi tiếp" : "Loại")</label>
+                            <label class="form-check-label">@(kq.KetQua ? "�u?c di ti?p" : "Lo?i")</label>
                         </div>
                     </td>
                     <td>
-                        <button class="btn btn-primary btn-sm" @onclick="() => LuuSoLoai(kq)">Lưu</button>
+                        <button class="btn btn-primary btn-sm" @onclick="() => LuuSoLoai(kq)">Luu</button>
                     </td>
                 </tr>
             }
@@ -64,12 +64,12 @@
 }
 else
 {
-    // --- GIAO DIỆN VÒNG CHUNG KHẢO ---
-    <div class="alert alert-info">Chỉ hiển thị các đề tài đã qua vòng sơ loại và có Hội đồng chấm Chung khảo.</div>
+    // --- GIAO DI?N V�NG CHUNG KH?O ---
+    <div class="alert alert-info">Ch? hi?n th? c�c d? t�i d� qua v�ng so lo?i v� c� H?i d?ng ch?m Chung kh?o.</div>
 
     @foreach (var cd in dsChuyenDe.Where(x => IsPassSoLoai(x.Id)))
     {
-        // Tìm hội đồng chung khảo của đề tài này
+        // T�m h?i d?ng chung kh?o c?a d? t�i n�y
         var hd = dsHoiDong.FirstOrDefault(x => x.IdChuyenDe == cd.Id && x.VongThi == VongCham.ChungKhao);
         if (hd == null) continue;
 
@@ -79,24 +79,24 @@ else
                     <strong>@cd.MaSoCD</strong> - @cd.TenChuyenDe
                 </span>
                 <span class="badge bg-primary fs-6">
-                    ĐIỂM TRUNG BÌNH: @CalcAverage(cd.Id).ToString("0.00")
+                    �I?M TRUNG B�NH: @CalcAverage(cd.Id).ToString("0.00")
                 </span>
             </div>
             <div class="card-body p-0">
                 <table class="table table-sm mb-0">
                     <thead>
                         <tr>
-                            <th>Thành viên hội đồng</th>
-                            <th>Vai trò</th>
-                            <th width="150">Điểm chấm</th>
-                            <th>Lưu</th>
+                            <th>Th�nh vi�n h?i d?ng</th>
+                            <th>Vai tr�</th>
+                            <th width="150">�i?m ch?m</th>
+                            <th>Luu</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var tv in hd.ThanhViens)
                         {
                             var gv = dsGiaoVien.FirstOrDefault(x => x.Id == tv.IdGiaoVien);
-                            // Tìm phiếu chấm của GV này (nếu chưa có tạo mới)
+                            // T�m phi?u ch?m c?a GV n�y (n?u chua c� t?o m?i)
                             var pc = GetPhieuCham(cd.Id, tv.IdGiaoVien);
 
                             <tr>
@@ -125,10 +125,10 @@ else
     private List<ChuyenDeNCKH> dsChuyenDe = new();
     private List<KetQuaSoLoai> dsKqSoLoai = new();
 
-    // Data chung khảo
+    // Data chung kh?o
     private List<HoiDong> dsHoiDong = new();
     private List<GiaoVien> dsGiaoVien = new();
-    private List<PhieuCham> dsPhieuChamAll = new(); // Load tất cả phiếu chấm về client để tính TB
+    private List<PhieuCham> dsPhieuChamAll = new(); // Load t?t c? phi?u ch?m v? client d? t�nh TB
 
     protected override async Task OnInitializedAsync()
     {
@@ -141,8 +141,8 @@ else
         var t2 = KqService.GetSoLoai();
         var t3 = KqService.GetHoiDong();
         var t4 = KqService.GetGiaoVien();
-        // Load tạm phiếu chấm của đề tài đầu tiên để demo, thực tế nên load all hoặc load on demand
-        // Ở đây tôi dùng giải pháp đơn giản: Load phiếu chấm khi render (sẽ tối ưu sau)
+        // Load t?m phi?u ch?m c?a d? t�i d?u ti�n d? demo, th?c t? n�n load all ho?c load on demand
+        // ? d�y t�i d�ng gi?i ph�p don gi?n: Load phi?u ch?m khi render (s? t?i uu sau)
 
         await Task.WhenAll(t1, t2, t3, t4);
         dsChuyenDe = t1.Result;
@@ -150,8 +150,8 @@ else
         dsHoiDong = t3.Result;
         dsGiaoVien = t4.Result;
 
-        // Load all phiếu chấm để tính điểm TB (cần tạo thêm API Get All PhieuCham nếu muốn nhanh)
-        // Tạm thời ta dùng vòng lặp load (hơi chậm nếu nhiều data, nhưng ok cho demo)
+        // Load all phi?u ch?m d? t�nh di?m TB (c?n t?o th�m API Get All PhieuCham n?u mu?n nhanh)
+        // T?m th?i ta d�ng v�ng l?p load (hoi ch?m n?u nhi?u data, nhung ok cho demo)
         // dsPhieuChamAll.Clear();
         // foreach (var cd in dsChuyenDe)
         // {
@@ -159,11 +159,11 @@ else
         //     dsPhieuChamAll.AddRange(pcs);
         // }
 
-        // ✅ Load tất cả phiếu chấm 1 lần - Nhanh hơn nhiều
+        // ? Load t?t c? phi?u ch?m 1 l?n - Nhanh hon nhi?u
         dsPhieuChamAll = await KqService.GetAllPhieuCham();
     }
 
-    // --- LOGIC SƠ LOẠI ---
+    // --- LOGIC SO LO?I ---
     private async Task LuuSoLoai(KetQuaSoLoai item)
     {
         await KqService.SaveSoLoai(item);
@@ -181,9 +181,9 @@ else
         return dsKqSoLoai.Any(x => x.IdChuyenDe == idCD && x.KetQua == true);
     }
 
-    // --- LOGIC CHUNG KHẢO ---
+    // --- LOGIC CHUNG KH?O ---
 
-    // Helper lấy phiếu chấm từ list local, nếu không có thì new
+    // Helper l?y phi?u ch?m t? list local, n?u kh�ng c� th� new
     private PhieuCham GetPhieuCham(int idCD, int idGV)
     {
         var pc = dsPhieuChamAll.FirstOrDefault(x => x.IdChuyenDe == idCD && x.IdGiaoVien == idGV);
@@ -198,7 +198,7 @@ else
     private async Task LuuPhieu(PhieuCham pc)
     {
         await KqService.SavePhieuCham(pc);
-        // Refresh lại list phiếu chấm của đề tài này để cập nhật điểm TB
+        // Refresh l?i list phi?u ch?m c?a d? t�i n�y d? c?p nh?t di?m TB
         var newPcs = await KqService.GetPhieuCham(pc.IdChuyenDe);
         dsPhieuChamAll.RemoveAll(x => x.IdChuyenDe == pc.IdChuyenDe);
         dsPhieuChamAll.AddRange(newPcs);

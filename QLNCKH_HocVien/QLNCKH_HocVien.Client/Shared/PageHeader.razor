@@ -1,0 +1,36 @@
+@using MudBlazor
+
+<MudPaper Elevation="0" Class="pa-4 mb-4" Style="background: linear-gradient(135deg, var(--mud-palette-primary) 0%, var(--mud-palette-primary-darken) 100%);">
+    <div class="d-flex justify-space-between align-center flex-wrap gap-2">
+        <div class="d-flex align-center gap-3">
+            @if (!string.IsNullOrEmpty(Icon))
+            {
+                <MudIcon Icon="@Icon" Size="Size.Large" Style="color: white;" />
+            }
+            <div>
+                <MudText Typo="Typo.h5" Style="color: white; font-weight: 600;">@Title</MudText>
+                @if (!string.IsNullOrEmpty(Subtitle))
+                {
+                    <MudText Typo="Typo.body2" Style="color: rgba(255,255,255,0.8);">@Subtitle</MudText>
+                }
+            </div>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            @ChildContent
+        </div>
+    </div>
+</MudPaper>
+
+@code {
+    [Parameter] 
+    public string Title { get; set; } = "Tiêu đề";
+
+    [Parameter] 
+    public string? Subtitle { get; set; }
+
+    [Parameter] 
+    public string? Icon { get; set; }
+
+    [Parameter] 
+    public RenderFragment? ChildContent { get; set; }
+}

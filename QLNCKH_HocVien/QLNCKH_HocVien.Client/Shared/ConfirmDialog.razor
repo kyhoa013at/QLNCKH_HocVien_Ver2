@@ -1,0 +1,43 @@
+@using MudBlazor
+
+<MudDialog>
+    <DialogContent>
+        <div class="d-flex align-items-center gap-3">
+            @if (Icon != null)
+            {
+                <MudIcon Icon="@Icon" Color="@IconColor" Size="Size.Large" />
+            }
+            <MudText>@ContentText</MudText>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Variant="Variant.Text">@CancelText</MudButton>
+        <MudButton Color="@ButtonColor" Variant="Variant.Filled" OnClick="Submit">@ConfirmText</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] 
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] 
+    public string ContentText { get; set; } = "Bạn có chắc chắn muốn thực hiện thao tác này?";
+
+    [Parameter] 
+    public string ConfirmText { get; set; } = "Xác nhận";
+
+    [Parameter] 
+    public string CancelText { get; set; } = "Hủy";
+
+    [Parameter] 
+    public string? Icon { get; set; } = Icons.Material.Filled.Warning;
+
+    [Parameter] 
+    public Color IconColor { get; set; } = Color.Warning;
+
+    [Parameter] 
+    public Color ButtonColor { get; set; } = Color.Error;
+
+    private void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    private void Cancel() => MudDialog.Cancel();
+}

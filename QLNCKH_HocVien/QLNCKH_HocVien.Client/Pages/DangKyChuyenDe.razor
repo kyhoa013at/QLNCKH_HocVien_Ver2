@@ -1,11 +1,11 @@
-﻿@page "/dangkychuyende"
-@rendermode InteractiveServer
+@page "/dangkychuyende"
+
 @using QLNCKH_HocVien.Client.Models
 @using QLNCKH_HocVien.Client.Services
 @inject ChuyenDeNCKHService CdService
 @inject IJSRuntime JS
 
-<h3 class="text-info fw-bold mb-4"><i class="bi bi-journal-text"></i> ĐĂNG KÝ CHUYÊN ĐỀ NCKH</h3>
+<h3 class="text-info fw-bold mb-4"><i class="bi bi-journal-text"></i> �ANG K� CHUY�N �? NCKH</h3>
 
 @if (!string.IsNullOrEmpty(msgError))
 {
@@ -15,25 +15,25 @@
 <div class="row">
     <div class="col-md-4">
         <div class="card shadow-sm">
-            <div class="card-header bg-info text-white">Thông tin đăng ký</div>
+            <div class="card-header bg-info text-white">Th�ng tin dang k�</div>
             <div class="card-body">
                 <EditForm Model="@cd" OnValidSubmit="Save">
                     <DataAnnotationsValidator />
 
                     <div class="mb-3">
-                        <label class="form-label">Mã chuyên đề (*)</label>
-                        <InputText @bind-Value="cd.MaSoCD" class="form-control" placeholder="VD: CĐ-2024-01" />
+                        <label class="form-label">M� chuy�n d? (*)</label>
+                        <InputText @bind-Value="cd.MaSoCD" class="form-control" placeholder="VD: C�-2024-01" />
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Tên chuyên đề (*)</label>
+                        <label class="form-label">T�n chuy�n d? (*)</label>
                         <InputTextArea @bind-Value="cd.TenChuyenDe" class="form-control" rows="3" />
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Học viên thực hiện (*)</label>
+                        <label class="form-label">H?c vi�n th?c hi?n (*)</label>
                         <InputSelect @bind-Value="cd.IdHocVien" class="form-select">
-                            <option value="">-- Chọn Học viên --</option>
+                            <option value="">-- Ch?n H?c vi�n --</option>
                             @foreach (var sv in dsSinhVien)
                             {
                                 <option value="@sv.Id">@sv.MaSV - @sv.HoTen</option>
@@ -43,17 +43,17 @@
                         {
                             var svChon = dsSinhVien.FirstOrDefault(x => x.Id == cd.IdHocVien);
                             <div class="mt-2 p-2 bg-light rounded small border">
-                                <strong>Thông tin:</strong><br />
-                                Lớp: @svChon?.Lop <br />
-                                Ngành: @(dsNganh.FirstOrDefault(n => n.IdLVNganh == svChon?.IdNganh)?.TenLVNganh ?? "Chưa cập nhật")
+                                <strong>Th�ng tin:</strong><br />
+                                L?p: @svChon?.Lop <br />
+                                Ng�nh: @(dsNganh.FirstOrDefault(n => n.IdLVNganh == svChon?.IdNganh)?.TenLVNganh ?? "Chua c?p nh?t")
                             </div>
                         }
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Lĩnh vực nghiên cứu</label>
+                        <label class="form-label">Linh v?c nghi�n c?u</label>
                         <InputSelect @bind-Value="cd.IdLinhVuc" class="form-select">
-                            <option value="">-- Chọn Lĩnh vực --</option>
+                            <option value="">-- Ch?n Linh v?c --</option>
                             @foreach (var lv in dsLinhVuc)
                             {
                                 <option value="@lv.Id">@lv.Ten</option>
@@ -61,7 +61,7 @@
                         </InputSelect>
                     </div>
 
-                    <button type="submit" class="btn btn-info text-white w-100"><i class="bi bi-plus-circle"></i> Đăng Ký</button>
+                    <button type="submit" class="btn btn-info text-white w-100"><i class="bi bi-plus-circle"></i> �ang K�</button>
                 </EditForm>
             </div>
         </div>
@@ -69,22 +69,22 @@
 
     <div class="col-md-8">
         <div class="card shadow-sm">
-            <div class="card-header">Danh sách chuyên đề đã đăng ký</div>
+            <div class="card-header">Danh s�ch chuy�n d? d� dang k�</div>
             <div class="card-body">
                 <table class="table table-bordered table-striped align-middle">
                     <thead class="table-light">
                         <tr>
-                            <th>Mã CĐ</th>
-                            <th>Tên Chuyên đề</th>
-                            <th style="width: 30%">Học viên thực hiện</th>
-                            <th>Lĩnh vực</th>
-                            <th>Xóa</th>
+                            <th>M� C�</th>
+                            <th>T�n Chuy�n d?</th>
+                            <th style="width: 30%">H?c vi�n th?c hi?n</th>
+                            <th>Linh v?c</th>
+                            <th>X�a</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in dsChuyenDe)
                         {
-                            // Lấy thông tin sinh viên từ ID
+                            // L?y th�ng tin sinh vi�n t? ID
                             var sv = dsSinhVien.FirstOrDefault(s => s.Id == item.IdHocVien);
                             var tenNganh = dsNganh.FirstOrDefault(n => n.IdLVNganh == sv?.IdNganh)?.TenLVNganh;
                             var tenLinhVuc = dsLinhVuc.FirstOrDefault(l => l.Id == item.IdLinhVuc)?.Ten;
@@ -104,7 +104,7 @@
                                     }
                                     else
                                     {
-                                        <span class="text-danger">Không tìm thấy SV</span>
+                                        <span class="text-danger">Kh�ng t�m th?y SV</span>
                                     }
                                 </td>
                                 <td>@tenLinhVuc</td>
@@ -127,7 +127,7 @@
     private List<ChuyenDeNCKH> dsChuyenDe = new();
     private string? msgError;
 
-    // Danh sách tham chiếu
+    // Danh s�ch tham chi?u
     private List<SinhVien> dsSinhVien = new();
     private List<LinhVucDeTai> dsLinhVuc = new();
     private List<Nganh> dsNganh = new();
@@ -150,7 +150,7 @@
         }
         catch (Exception ex)
         {
-            msgError = "Lỗi tải dữ liệu: " + ex.Message;
+            msgError = "L?i t?i d? li?u: " + ex.Message;
         }
     }
 
@@ -171,7 +171,7 @@
 
     private async Task Delete(int id)
     {
-        if (!await JS.InvokeAsync<bool>("confirm", "Bạn có chắc muốn xóa chuyên đề này?")) return;
+        if (!await JS.InvokeAsync<bool>("confirm", "B?n c� ch?c mu?n x�a chuy�n d? n�y?")) return;
 
         await CdService.XoaChuyenDe(id);
         dsChuyenDe = await CdService.LayDsChuyenDe();

@@ -4,29 +4,49 @@
 @using System.Security.Claims
 @inject IHttpContextAccessor HttpContextAccessor
 @inject NavigationManager Navigation
+@inject IJSRuntime JS
 
-<MudThemeProvider />
+<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="@_customTheme" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="1" Color="Color.Primary">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudText Typo="Typo.h6" Class="ml-3">HỆ THỐNG QUẢN LÝ NCKH</MudText>
+    <MudAppBar Elevation="2" Dense="true">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" 
+                       Color="Color.Inherit" 
+                       Edge="Edge.Start" 
+                       OnClick="@DrawerToggle" />
+        <MudText Typo="Typo.h6" Class="ml-3 d-none d-sm-flex">HỆ THỐNG QUẢN LÝ NCKH</MudText>
+        <MudText Typo="Typo.h6" Class="ml-3 d-flex d-sm-none">QLNCKH</MudText>
         <MudSpacer />
         
-        @if (isAuthenticated)
+        @* Dark Mode Toggle *@
+        <MudTooltip Text="@(_isDarkMode ? "Chế độ sáng" : "Chế độ tối")">
+            <MudIconButton Icon="@(_isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" 
+                           Color="Color.Inherit"
+                           OnClick="@ToggleDarkMode" />
+        </MudTooltip>
+
+        @if (_isAuthenticated)
         {
-            <MudChip T="string" Color="Color.Surface" Size="Size.Small" Class="mr-2">
-                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Class="mr-1" />
-                @userName (@userRole)
-            </MudChip>
-            <MudTooltip Text="Đăng xuất">
-                <MudIconButton Icon="@Icons.Material.Filled.Logout" 
+            <MudMenu Icon="@Icons.Material.Filled.AccountCircle" 
                                Color="Color.Inherit" 
-                               Href="/api/auth/logout" />
-            </MudTooltip>
+                     AnchorOrigin="Origin.BottomRight" 
+                     TransformOrigin="Origin.TopRight"
+                     Dense="true">
+                <ChildContent>
+                    <MudMenuItem Disabled="true">
+                        <div class="d-flex flex-column">
+                            <MudText Typo="Typo.body2" Style="font-weight: 600;">@_userName</MudText>
+                            <MudText Typo="Typo.caption" Color="Color.Secondary">@_userRole</MudText>
+                        </div>
+                    </MudMenuItem>
+                    <MudDivider />
+                    <MudMenuItem Icon="@Icons.Material.Filled.Settings" Href="/settings">Cài đặt</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.Logout" Href="/api/auth/logout">Đăng xuất</MudMenuItem>
+                </ChildContent>
+            </MudMenu>
         }
         else
         {
@@ -39,34 +59,114 @@
         }
     </MudAppBar>
 
-    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+    <MudDrawer @bind-Open="_drawerOpen" 
+               ClipMode="DrawerClipMode.Always" 
+               Elevation="2"
+               Variant="@DrawerVariant.Mini"
+               OpenMiniOnHover="true">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6" Color="Color.Primary">QLNCKH</MudText>
+        </MudDrawerHeader>
         <NavMenu />
     </MudDrawer>
 
-    <MudMainContent>
-        <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudMainContent Class="pt-4">
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="px-4 pb-4">
             @Body
         </MudContainer>
     </MudMainContent>
 </MudLayout>
 
 @code {
-    bool _drawerOpen = true;
-    bool isAuthenticated = false;
-    string userName = "";
-    string userRole = "";
+    private bool _drawerOpen = true;
+    private bool _isAuthenticated = false;
+    private string _userName = "";
+    private string _userRole = "";
+    private bool _isDarkMode = false;
 
-    void DrawerToggle() => _drawerOpen = !_drawerOpen;
+    private MudTheme _customTheme = new MudTheme()
+    {
+        PaletteLight = new PaletteLight()
+        {
+            Primary = "#1976D2",
+            PrimaryDarken = "#1565C0",
+            Secondary = "#FF9800",
+            AppbarBackground = "#1976D2",
+            Background = "#F5F5F5",
+            DrawerBackground = "#FFFFFF",
+            Surface = "#FFFFFF",
+            TextPrimary = "#212121",
+            TextSecondary = "#757575",
+            Success = "#4CAF50",
+            Warning = "#FF9800",
+            Error = "#F44336",
+            Info = "#2196F3"
+        },
+        PaletteDark = new PaletteDark()
+        {
+            Primary = "#90CAF9",
+            PrimaryDarken = "#64B5F6",
+            Secondary = "#FFB74D",
+            AppbarBackground = "#1E1E1E",
+            Background = "#121212",
+            DrawerBackground = "#1E1E1E",
+            Surface = "#1E1E1E",
+            TextPrimary = "#FFFFFF",
+            TextSecondary = "#B0BEC5",
+            Success = "#81C784",
+            Warning = "#FFB74D",
+            Error = "#EF5350",
+            Info = "#64B5F6"
+        },
+        LayoutProperties = new LayoutProperties()
+        {
+            DefaultBorderRadius = "8px"
+        }
+    };
+
+    private void DrawerToggle() => _drawerOpen = !_drawerOpen;
 
     protected override void OnInitialized()
     {
         var httpContext = HttpContextAccessor.HttpContext;
         if (httpContext?.User?.Identity?.IsAuthenticated == true)
         {
-            isAuthenticated = true;
-            userName = httpContext.User.FindFirst(ClaimTypes.GivenName)?.Value ?? 
+            _isAuthenticated = true;
+            _userName = httpContext.User.FindFirst(ClaimTypes.GivenName)?.Value ?? 
                        httpContext.User.Identity.Name ?? "User";
-            userRole = httpContext.User.FindFirst(ClaimTypes.Role)?.Value ?? "";
+            _userRole = httpContext.User.FindFirst(ClaimTypes.Role)?.Value ?? "";
         }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await LoadDarkModePreference();
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadDarkModePreference()
+    {
+        try
+        {
+            var saved = await JS.InvokeAsync<string>("localStorage.getItem", "darkMode");
+            if (!string.IsNullOrEmpty(saved) && bool.TryParse(saved, out var isDark))
+            {
+                _isDarkMode = isDark;
+            }
+        }
+        catch { }
+    }
+
+    private async Task ToggleDarkMode()
+    {
+        _isDarkMode = !_isDarkMode;
+        try
+        {
+            await JS.InvokeVoidAsync("localStorage.setItem", "darkMode", _isDarkMode.ToString().ToLower());
+        }
+        catch { }
     }
 }

@@ -1,0 +1,43 @@
+@using MudBlazor
+
+<MudTable Items="@Enumerable.Range(1, Rows)" Hover="false" Elevation="0" Dense="true">
+    <ColGroup>
+        @for (int i = 0; i < Columns; i++)
+        {
+            <col />
+        }
+    </ColGroup>
+    <HeaderContent>
+        @for (int i = 0; i < Columns; i++)
+        {
+            <MudTh>
+                <MudSkeleton Width="80%" Height="20px" Animation="Animation.Wave" />
+            </MudTh>
+        }
+    </HeaderContent>
+    <RowTemplate>
+        @for (int i = 0; i < Columns; i++)
+        {
+            <MudTd>
+                <MudSkeleton Width="@GetRandomWidth()" Height="18px" Animation="Animation.Wave" />
+            </MudTd>
+        }
+    </RowTemplate>
+</MudTable>
+
+@code {
+    [Parameter] 
+    public int Rows { get; set; } = 5;
+
+    [Parameter] 
+    public int Columns { get; set; } = 6;
+
+    private static readonly Random _random = new();
+
+    private string GetRandomWidth()
+    {
+        var widths = new[] { "60%", "70%", "80%", "90%", "50%" };
+        return widths[_random.Next(widths.Length)];
+    }
+}
+

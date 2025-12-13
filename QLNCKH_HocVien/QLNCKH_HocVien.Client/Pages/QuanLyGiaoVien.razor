@@ -1,12 +1,12 @@
-﻿@page "/quanlygiaovien"
-@rendermode InteractiveServer
+@page "/quanlygiaovien"
+
 @using QLNCKH_HocVien.Client.Models
 @using QLNCKH_HocVien.Client.Services
 @using QLNCKH_HocVien.Client.Exceptions
 @inject GiaoVienService GvService
 @inject NavigationManager Navigation
 
-<h3 class="text-primary fw-bold mb-3"><i class="bi bi-person-video3"></i> QUẢN LÝ THÔNG TIN GIÁO VIÊN</h3>
+<h3 class="text-primary fw-bold mb-3"><i class="bi bi-person-video3"></i> QU?N L� TH�NG TIN GI�O VI�N</h3>
 
 @if (!string.IsNullOrEmpty(msgError))
 {
@@ -14,36 +14,36 @@
 }
 
 <div class="card mb-4 shadow-sm">
-    <div class="card-header bg-primary text-white">Nhập thông tin hồ sơ</div>
+    <div class="card-header bg-primary text-white">Nh?p th�ng tin h? so</div>
     <div class="card-body">
         <EditForm Model="@gv" OnValidSubmit="Save">
             <DataAnnotationsValidator/>
 
             <div class="row g-3">
                 <div class="col-md-3">
-                    <label class="form-label">Mã số CB (*)</label>
+                    <label class="form-label">M� s? CB (*)</label>
                     <InputText @bind-Value="gv.MaSoCB" class="form-control" />
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Họ Tên (*)</label>
+                    <label class="form-label">H? T�n (*)</label>
                     <InputText @bind-Value="gv.HoTen" class="form-control" />
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label">Giới tính</label>
+                    <label class="form-label">Gi?i t�nh</label>
                     <InputSelect @bind-Value="gv.GioiTinh" class="form-select">
                         <option value="Nam">Nam</option>
-                        <option value="Nữ">Nữ</option>
+                        <option value="N?">N?</option>
                     </InputSelect>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Ngày sinh</label>
+                    <label class="form-label">Ng�y sinh</label>
                     <InputDate @bind-Value="gv.NgaySinh" class="form-control" />
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">Quê quán (Tỉnh)</label>
+                    <label class="form-label">Qu� qu�n (T?nh)</label>
                     <InputSelect @bind-Value="gv.IdTinh" class="form-select">
-                        <option value="">-- Chọn --</option>
+                        <option value="">-- Ch?n --</option>
                         @foreach (var i in lsTinh)
                         {
                             <option value="@i.IdTinh">@i.TenTinh</option>
@@ -51,9 +51,9 @@
                     </InputSelect>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Dân tộc</label>
+                    <label class="form-label">D�n t?c</label>
                     <InputSelect @bind-Value="gv.IdDanToc" class="form-select">
-                        <option value="">-- Chọn --</option>
+                        <option value="">-- Ch?n --</option>
                         @foreach (var i in lsDanToc)
                         {
                             <option value="@i.IdDanToc">@i.TenDanToc</option>
@@ -61,9 +61,9 @@
                     </InputSelect>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Tôn giáo</label>
+                    <label class="form-label">T�n gi�o</label>
                     <InputSelect @bind-Value="gv.IdTonGiao" class="form-select">
-                        <option value="">-- Chọn --</option>
+                        <option value="">-- Ch?n --</option>
                         @foreach (var i in lsTonGiao)
                         {
                             <option value="@i.IdTonGiao">@i.TenTonGiao</option>
@@ -71,14 +71,14 @@
                     </InputSelect>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">SĐT</label>
+                    <label class="form-label">S�T</label>
                     <InputText @bind-Value="gv.SoDienThoai" class="form-control" />
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">TĐ Chuyên môn</label>
+                    <label class="form-label">T� Chuy�n m�n</label>
                     <InputSelect @bind-Value="gv.IdTrinhDoChuyenMon" class="form-select">
-                        <option value="">-- Chọn --</option>
+                        <option value="">-- Ch?n --</option>
                         @foreach (var i in lsTDCM)
                         {
                             <option value="@i.Id">@i.Ten</option>
@@ -86,9 +86,9 @@
                     </InputSelect>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">TĐ Chính trị (LLCT)</label>
+                    <label class="form-label">T� Ch�nh tr? (LLCT)</label>
                     <InputSelect @bind-Value="gv.IdTrinhDoLLCT" class="form-select">
-                        <option value="">-- Chọn --</option>
+                        <option value="">-- Ch?n --</option>
                         @foreach (var i in lsTDLLCT)
                         {
                             <option value="@i.Id">@i.Ten</option>
@@ -96,9 +96,9 @@
                     </InputSelect>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label">Đơn vị công tác</label>
+                    <label class="form-label">�on v? c�ng t�c</label>
                     <InputSelect @bind-Value="gv.IdDonViCongTac" class="form-select">
-                        <option value="">-- Chọn Đơn vị --</option>
+                        <option value="">-- Ch?n �on v? --</option>
                         @foreach (var i in lsToChuc)
                         {
                             <option value="@i.Id">@i.Ten</option>
@@ -107,9 +107,9 @@
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">Chức vụ</label>
+                    <label class="form-label">Ch?c v?</label>
                     <InputSelect @bind-Value="gv.IdChucVu" class="form-select">
-                        <option value="">-- Chọn --</option>
+                        <option value="">-- Ch?n --</option>
                         @foreach (var i in lsChucVu)
                         {
                             <option value="@i.IdChucVu">@i.TenChucVu</option>
@@ -117,9 +117,9 @@
                     </InputSelect>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Cấp bậc</label>
+                    <label class="form-label">C?p b?c</label>
                     <InputSelect @bind-Value="gv.IdCapBac" class="form-select">
-                        <option value="">-- Chọn --</option>
+                        <option value="">-- Ch?n --</option>
                         @foreach (var i in lsCapBac)
                         {
                             <option value="@i.Id">@i.Ten</option>
@@ -127,18 +127,18 @@
                     </InputSelect>
                 </div>
                 <div class="col-md-2">
-                    <label class="form-label">Hệ số lương</label>
+                    <label class="form-label">H? s? luong</label>
                     <InputNumber @bind-Value="gv.HeSoLuong" class="form-control" />
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Lĩnh vực chuyên môn</label>
+                    <label class="form-label">Linh v?c chuy�n m�n</label>
                     <InputText @bind-Value="gv.LinhVuc" class="form-control" />
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Chức danh</label>
+                    <label class="form-label">Ch?c danh</label>
                     <InputSelect @bind-Value="gv.IdChucDanh" class="form-select">
-                        <option value="">-- Chọn --</option>
+                        <option value="">-- Ch?n --</option>
                         @foreach (var i in lsChucDanh)
                         {
                             <option value="@i.Id">@i.Ten</option>
@@ -146,9 +146,9 @@
                     </InputSelect>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Học hàm</label>
+                    <label class="form-label">H?c h�m</label>
                     <InputSelect @bind-Value="gv.IdHocHam" class="form-select">
-                        <option value="">-- Chọn --</option>
+                        <option value="">-- Ch?n --</option>
                         @foreach (var i in lsHocHam)
                         {
                             <option value="@i.Id">@i.Ten</option>
@@ -156,9 +156,9 @@
                     </InputSelect>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Học vị</label>
+                    <label class="form-label">H?c v?</label>
                     <InputSelect @bind-Value="gv.IdHocVi" class="form-select">
-                        <option value="">-- Chọn --</option>
+                        <option value="">-- Ch?n --</option>
                         @foreach (var i in lsHocVi)
                         {
                             <option value="@i.Id">@i.Ten</option>
@@ -168,7 +168,7 @@
             </div>
 
             <div class="mt-3 text-end">
-                <button type="submit" class="btn btn-success"><i class="bi bi-floppy"></i> Lưu Hồ Sơ</button>
+                <button type="submit" class="btn btn-success"><i class="bi bi-floppy"></i> Luu H? So</button>
             </div>
         </EditForm>
     </div>
@@ -179,12 +179,12 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Mã CB</th>
-                    <th>Họ Tên</th>
-                    <th>Ngày sinh</th>
-                    <th>Đơn vị</th>
-                    <th>Chức danh/Học vị</th>
-                    <th>Thao tác</th>
+                    <th>M� CB</th>
+                    <th>H? T�n</th>
+                    <th>Ng�y sinh</th>
+                    <th>�on v?</th>
+                    <th>Ch?c danh/H?c v?</th>
+                    <th>Thao t�c</th>
                 </tr>
             </thead>
             <tbody>
@@ -202,7 +202,7 @@
                             @(lsHocVi.FirstOrDefault(x => x.Id == i.IdHocVi)?.Ten)
                         </td>
                         <td>
-                            <button class="btn btn-danger btn-sm" @onclick="() => Del(i.Id)">Xóa</button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => Del(i.Id)">X�a</button>
                         </td>
                     </tr>
                 }
@@ -216,7 +216,7 @@
     private List<GiaoVien> listGiaoVien = new();
     private string? msgError;
 
-    // Các list danh mục
+    // C�c list danh m?c
     private List<Tinh> lsTinh = new();
     private List<DanToc> lsDanToc = new();
     private List<TonGiao> lsTonGiao = new();
@@ -233,7 +233,7 @@
     {
         try
         {
-            // Load song song tất cả danh mục cho nhanh
+            // Load song song t?t c? danh m?c cho nhanh
             var tasks = new Task[]
             {
                 LoadCatalog(async () => lsTinh = await GvService.LayDsTinh()),
@@ -253,16 +253,16 @@
         }
         catch (UnauthorizedException)
         {
-            // Redirect đến trang access-denied khi không có quyền
+            // Redirect d?n trang access-denied khi kh�ng c� quy?n
             Navigation.NavigateTo("/access-denied", forceLoad: true);
         }
         catch (Exception ex)
         {
-            msgError = "Lỗi tải dữ liệu: " + ex.Message;
+            msgError = "L?i t?i d? li?u: " + ex.Message;
         }
     }
 
-    // Hàm phụ để ignore lỗi từng catalog (tránh 1 cái lỗi làm chết cả trang)
+    // H�m ph? d? ignore l?i t?ng catalog (tr�nh 1 c�i l?i l�m ch?t c? trang)
     private async Task LoadCatalog(Func<Task> action)
     {
         try { await action(); } catch { }

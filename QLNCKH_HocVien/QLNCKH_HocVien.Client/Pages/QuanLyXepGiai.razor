@@ -1,13 +1,13 @@
-﻿@page "/xepgiai"
-@rendermode InteractiveServer
+@page "/xepgiai"
+
 @using QLNCKH_HocVien.Client.Models
 @using QLNCKH_HocVien.Client.Services
 @inject XepGiaiService XgService
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="text-danger fw-bold"><i class="bi bi-trophy-fill"></i> BẢNG XẾP HẠNG & TRAO GIẢI</h3>
+    <h3 class="text-danger fw-bold"><i class="bi bi-trophy-fill"></i> B?NG X?P H?NG & TRAO GI?I</h3>
     <button class="btn btn-warning fw-bold" @onclick="XuLyXepGiai">
-        <i class="bi bi-arrow-repeat"></i> Tổng hợp & Xếp giải
+        <i class="bi bi-arrow-repeat"></i> T?ng h?p & X?p gi?i
     </button>
 </div>
 
@@ -18,12 +18,12 @@
         <table class="table table-hover table-striped mb-0 align-middle">
             <thead class="bg-warning text-dark">
                 <tr>
-                    <th>Hạng</th>
-                    <th>Giải Thưởng</th>
-                    <th>Mã CĐ</th>
-                    <th>Tên Chuyên Đề</th>
-                    <th>Điểm TB</th>
-                    <th>Học viên thực hiện</th>
+                    <th>H?ng</th>
+                    <th>Gi?i Thu?ng</th>
+                    <th>M� C�</th>
+                    <th>T�n Chuy�n �?</th>
+                    <th>�i?m TB</th>
+                    <th>H?c vi�n th?c hi?n</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,7 +36,7 @@
                     <tr class="@GetRowClass(item.TenGiai)">
                         <td class="fw-bold text-center">#@item.XepHang</td>
                         <td>
-                            @if(item.TenGiai.Contains("Nhất")) { <i class="bi bi-star-fill text-warning"></i> }
+                            @if(item.TenGiai.Contains("Nh?t")) { <i class="bi bi-star-fill text-warning"></i> }
                             <span class="fw-bold">@item.TenGiai</span>
                         </td>
                         <td>@cd?.MaSoCD</td>
@@ -94,20 +94,20 @@
         try
         {
             await XgService.TuDongXepGiai();
-            await LoadData(); // Refresh lại bảng sau khi tính toán
+            await LoadData(); // Refresh l?i b?ng sau khi t�nh to�n
         }
         catch(Exception ex)
         {
-            msgError = "Lỗi tính toán: " + ex.Message;
+            msgError = "L?i t�nh to�n: " + ex.Message;
         }
     }
 
-    // Helper tạo màu nền cho từng loại giải
+    // Helper t?o m�u n?n cho t?ng lo?i gi?i
     private string GetRowClass(string tenGiai)
     {
-        if (tenGiai.Contains("Nhất")) return "table-warning"; // Vàng
-        if (tenGiai.Contains("Nhì")) return "table-primary"; // Xanh dương nhạt
-        if (tenGiai.Contains("Ba")) return "table-success"; // Xanh lá
+        if (tenGiai.Contains("Nh?t")) return "table-warning"; // V�ng
+        if (tenGiai.Contains("Nh�")) return "table-primary"; // Xanh duong nh?t
+        if (tenGiai.Contains("Ba")) return "table-success"; // Xanh l�
         return "";
     }
 }
