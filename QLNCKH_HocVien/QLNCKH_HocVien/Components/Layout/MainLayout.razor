@@ -1,0 +1,72 @@
+﻿@inherits LayoutComponentBase
+@using QLNCKH_HocVien.Client.Services
+@using QLNCKH_HocVien.Client.Models
+@using System.Security.Claims
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager Navigation
+
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1" Color="Color.Primary">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h6" Class="ml-3">HỆ THỐNG QUẢN LÝ NCKH</MudText>
+        <MudSpacer />
+        
+        @if (isAuthenticated)
+        {
+            <MudChip T="string" Color="Color.Surface" Size="Size.Small" Class="mr-2">
+                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Class="mr-1" />
+                @userName (@userRole)
+            </MudChip>
+            <MudTooltip Text="Đăng xuất">
+                <MudIconButton Icon="@Icons.Material.Filled.Logout" 
+                               Color="Color.Inherit" 
+                               Href="/api/auth/logout" />
+            </MudTooltip>
+        }
+        else
+        {
+            <MudButton Variant="Variant.Text" 
+                       Color="Color.Inherit" 
+                       StartIcon="@Icons.Material.Filled.Login"
+                       Href="/login">
+                Đăng nhập
+            </MudButton>
+        }
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu />
+    </MudDrawer>
+
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    bool _drawerOpen = true;
+    bool isAuthenticated = false;
+    string userName = "";
+    string userRole = "";
+
+    void DrawerToggle() => _drawerOpen = !_drawerOpen;
+
+    protected override void OnInitialized()
+    {
+        var httpContext = HttpContextAccessor.HttpContext;
+        if (httpContext?.User?.Identity?.IsAuthenticated == true)
+        {
+            isAuthenticated = true;
+            userName = httpContext.User.FindFirst(ClaimTypes.GivenName)?.Value ?? 
+                       httpContext.User.Identity.Name ?? "User";
+            userRole = httpContext.User.FindFirst(ClaimTypes.Role)?.Value ?? "";
+        }
+    }
+}

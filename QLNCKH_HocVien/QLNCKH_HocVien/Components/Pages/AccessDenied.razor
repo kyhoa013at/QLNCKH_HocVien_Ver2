@@ -1,0 +1,49 @@
+@page "/access-denied"
+@using MudBlazor
+
+<div class="access-denied-container">
+    <div class="access-denied-card">
+        <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Large" Color="Color.Error" Style="font-size: 80px;" />
+        <h2 class="mt-4">Truy cập bị từ chối</h2>
+        <p class="text-muted">Bạn không có quyền truy cập trang này.</p>
+        
+        <div class="mt-4">
+            <MudButton Variant="Variant.Filled" 
+                       Color="Color.Primary" 
+                       Href="/"
+                       StartIcon="@Icons.Material.Filled.Home">
+                Về trang chủ
+            </MudButton>
+            <MudButton Variant="Variant.Outlined" 
+                       Color="Color.Primary" 
+                       Href="/api/auth/logout"
+                       StartIcon="@Icons.Material.Filled.Login"
+                       Class="ml-2">
+                Đăng nhập lại
+            </MudButton>
+        </div>
+    </div>
+</div>
+
+<style>
+    .access-denied-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .access-denied-card {
+        text-align: center;
+        padding: 60px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .access-denied-card h2 {
+        color: #d32f2f;
+        font-weight: 600;
+    }
+</style>
+

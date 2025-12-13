@@ -1,0 +1,161 @@
+@page "/login"
+@using MudBlazor
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager Navigation
+
+@if (isAuthenticated)
+{
+    <!-- Nếu đã đăng nhập, hiển thị thông báo và redirect -->
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        <MudCard Style="max-width: 400px; text-align: center;">
+            <MudCardContent>
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Style="font-size: 60px;" />
+                <MudText Typo="Typo.h5" Class="mt-3">Bạn đã đăng nhập</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mt-2">
+                    Đang chuyển hướng về trang chủ...
+                </MudText>
+            </MudCardContent>
+            <MudCardActions Class="justify-center pb-4">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/">
+                    Về trang chủ
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
+    </div>
+    
+    <script>
+        setTimeout(function() { window.location.href = '/'; }, 1500);
+    </script>
+}
+else
+{
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <MudIcon Icon="@Icons.Material.Filled.School" Size="Size.Large" Color="Color.Primary" />
+                <h2>HỆ THỐNG QLNCKH</h2>
+                <p class="text-muted">Đăng nhập để tiếp tục</p>
+            </div>
+
+            @if (hasError)
+            {
+                <MudAlert Severity="Severity.Error" Class="mb-3" Dense="true">
+                    Tên đăng nhập hoặc mật khẩu không đúng
+                </MudAlert>
+            }
+
+            <!-- Form POST trực tiếp đến API để browser nhận cookie -->
+            <form method="post" action="/api/auth/login-form">
+                <MudTextField T="string" 
+                              Name="username"
+                              Label="Tên đăng nhập"
+                              Variant="Variant.Outlined"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Person"
+                              Class="mb-3"
+                              Required="true" />
+
+                <MudTextField T="string" 
+                              Name="password"
+                              Label="Mật khẩu"
+                              Variant="Variant.Outlined"
+                              InputType="InputType.Password"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Lock"
+                              Class="mb-3"
+                              Required="true" />
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <MudCheckBox T="bool"
+                                 Name="remember"
+                                 Label="Ghi nhớ đăng nhập"
+                                 Color="Color.Primary"
+                                 Dense="true" />
+                </div>
+
+                <MudButton ButtonType="ButtonType.Submit"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           FullWidth="true"
+                           Size="Size.Large">
+                    <MudIcon Icon="@Icons.Material.Filled.Login" Class="me-2" />
+                    <span>Đăng nhập</span>
+                </MudButton>
+            </form>
+
+            <div class="login-footer mt-4">
+                <small class="text-muted">© 2024 - Hệ thống Quản lý NCKH Học viên</small>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .login-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #1976d2 0%, #1565c0 50%, #0d47a1 100%);
+        padding: 20px;
+    }
+
+    .login-card {
+        background: white;
+        border-radius: 16px;
+        padding: 40px;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.5s ease-out;
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .login-header h2 {
+        color: #1976d2;
+        margin: 15px 0 5px;
+        font-weight: 700;
+    }
+
+    .login-footer {
+        text-align: center;
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+    }
+</style>
+
+@code {
+    private bool hasError = false;
+    private bool isAuthenticated = false;
+
+    protected override void OnInitialized()
+    {
+        var httpContext = HttpContextAccessor.HttpContext;
+        
+        // Kiểm tra đã đăng nhập chưa
+        isAuthenticated = httpContext?.User?.Identity?.IsAuthenticated == true;
+        
+        // Kiểm tra query string xem có lỗi không
+        if (!isAuthenticated)
+        {
+            var uri = new Uri(Navigation.Uri);
+            hasError = uri.Query.Contains("error=1");
+        }
+    }
+}
+
